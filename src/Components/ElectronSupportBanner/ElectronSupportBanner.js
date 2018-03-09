@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 
+import './ElectronSupportBanner.css';
+
 class ElectronSupportBanner extends Component {
+    constructor(props) {
+        super(props);
+        console.log(window);
+        this.state = {
+            isRunningOnElectron: !!window.electron
+        }
+    }
 
     render() {
-        let isRunningOnElectron = null;
-
-        if( !window.require ) {
-            isRunningOnElectron = 'Electron is not supported';
-        }       
-        return (
-            <p>{isRunningOnElectron}</p>
-        )
+        return !this.state.isRunningOnElectron ? (
+            <div className="ElectronSupportBanner">
+                <p>Application is not mounted in electron</p>
+            </div>
+        ) : null;
     }
 }
 

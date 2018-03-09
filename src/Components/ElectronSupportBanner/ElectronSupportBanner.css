@@ -1,0 +1,13 @@
+.ElectronSupportBanner {
+    background-color: #1B98E0;
+    color: #F3F4F2;
+    position: relative;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.ElectronSupportBanner > p {
+    padding: 5px;
+    text-align: center;
+}

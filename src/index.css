@@ -1,5 +1,14 @@
+/* 
+  White: #F3F4F2
+  Blue: #1B98E0
+  Yellow: #FAC05E
+  Green: #59CD90
+  Red: #EE6352
+*/
+html,
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: #F3F4F2;
 }
