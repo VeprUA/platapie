@@ -1,0 +1,8 @@
+.Navigation {
+    height: 200px;
+}
+
+.Navigation .container,
+.Navigation .container .row{
+    height: 100%;
+}

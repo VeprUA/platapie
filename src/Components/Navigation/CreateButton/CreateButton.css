@@ -1,0 +1,25 @@
+.CreateButton {
+    width: 130px;
+    height: 40px;
+    border-radius: 50px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    font-size: 14px;
+    background: linear-gradient(45deg, #67f2e9 0%,#67f575 100%);
+}
+
+.CreateButton:hover {
+    background: rgba(0, 0, 0, 0);
+    border: 2px solid #67f575;
+    color: #67f575;
+}
+
+.CreateButton:active{
+    background-color: #67f575;
+    border: 2px solid #67f575;
+    color: white;
+    transition: background-color 2s linear;
+    transition: color 0.5s linear;
+}

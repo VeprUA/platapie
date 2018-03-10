@@ -1,0 +1,28 @@
+.Node{
+    margin-bottom: 33px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    padding-left: 40px;
+    background-color: #F7F7F7;
+    border-radius: 12px;
+    height: 75px;
+}
+
+.Node .row {
+    height: 100%;
+}
+
+.Node .title {
+    font-size: 24px;
+    color: #585858;
+    font-weight: bold;
+    padding: 2px;
+    text-transform: uppercase;
+}
+
+.Node .subheader {
+    margin-top:5px;
+    font-size: 14px;
+    color: #5B5B5B;
+    font-weight: 300;
+}
