@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { Route, Switch, Link } from 'react-router-dom';
 import './App.css';
 
 import { Grid } from 'react-flexbox-grid';
@@ -15,14 +16,34 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <ElectronSupportBanner />
-        <Navigation />
-        <Grid>
-          <NodeList/>
-        </Grid>
+        <Switch>
+          <Route path='/node/:nodeId' component={NodeDetail} />
+          <Route path='/' component={Home} />
+        </Switch>
       </div>
     );
   }
+}
+
+function Home(props){
+  return (
+    <Fragment>
+      <ElectronSupportBanner />
+      <Navigation />
+      <Grid>
+        <NodeList/>
+      </Grid>
+    </Fragment>
+  )
+}
+
+function NodeDetail(props){
+  return(
+    <Fragment>
+      <div>OM AH AITS A FRAGMENT {props.match.params.nodeId} </div>
+      <Link to='/'>HOME</Link>
+    </Fragment>
+  )
 }
 
 export default App;
