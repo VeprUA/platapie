@@ -5,7 +5,7 @@ import './ToggleButton.css';
 function ToggleSwitch(props) {
     return (
         <label className="ToggleSwitch">
-            <input type="checkbox"/>
+            <input type="checkbox" checked={props.nodeStatus} onChange={props.toggleEvent}/>
             <span className="slider round"></span>
         </label>
     )

@@ -5,6 +5,7 @@
   "main": "electron.app.js",
   "homepage": "./",
   "dependencies": {
+    "history": "^4.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-flexbox-grid": "^2.0.0",

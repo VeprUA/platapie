@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Row } from 'react-flexbox-grid';
-import { Link } from 'react-router-dom';
-import history from 'history/createBrowserHistory';
-
 import Node from '../Node/Node';
 
 
@@ -19,18 +16,11 @@ class NodeList extends Component {
         }
     }
 
-    clickHandler = (nodeId) => {
-        let location = {
-            pathname: `/node/${nodeId}`
-        }
-        history.push(location);
-    }
-
     render() {
         let renderedNodeList = this.state.nodeList.map((node) => {
             return (
                 <Row key={node.id}>
-                    <Node onClick={this.clickHandler(node.id)}/>
+                    <Node nodeId={node.id}/>
                 </Row>
             )
         })
