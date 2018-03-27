@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
 
 import { Grid } from 'react-flexbox-grid';
@@ -7,6 +7,7 @@ import { Grid } from 'react-flexbox-grid';
 import ElectronSupportBanner from './Components/ElectronSupportBanner/ElectronSupportBanner';
 import Navigation from './Components/Navigation/Navigation';
 import NodeList from './Components/Node-List/NodeList';
+import NodeDetail from './Components/Node-Detail/Node-Detail';
 
 class App extends Component {
   componentDidMount() {
@@ -18,14 +19,14 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route path='/nodes/:nodeId' component={NodeDetail} />
-          <Route path='/' component={Home} />
+          <Route path='/' component={HomeRoute} />
         </Switch>
       </div>
     );
   }
 }
 
-function Home(props){
+function HomeRoute(props){
   return (
     <Fragment>
       <ElectronSupportBanner />
@@ -33,15 +34,6 @@ function Home(props){
       <Grid>
         <NodeList/>
       </Grid>
-    </Fragment>
-  )
-}
-
-function NodeDetail(props){
-  return(
-    <Fragment>
-      <div>OM AH AITS A FRAGMENT {props.match.params.nodeId} </div>
-      <Link to='/'>HOME</Link>
     </Fragment>
   )
 }

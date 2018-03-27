@@ -1,0 +1,75 @@
+#svg1Container {
+    width: 100%;
+}
+
+#svg1ProccessSubHeader {
+    font-size: 0.09em;
+}
+
+#svg1ProccessTitle {
+    font-size: 0.2em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#svg1NodeId {
+    font-size: 0.1em;
+    text-align: right;
+}
+
+#node-detail-go-back-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+form#node-detail {
+    margin: 50px 0 50px 0;
+}
+
+form#node-detail label {
+    font-size: 16px;
+    display:block;
+}
+
+form#node-detail input {
+    font-size:  21px;
+    padding: 10px 0 2px 0;
+    border: 0;
+    border-bottom: 1px solid #F3F4F2;
+    width: 100%;
+    transition: border-color 0.2s linear;
+    font-weight: 100;
+}
+
+form#node-detail input:focus {
+    outline: 0;
+    border-bottom-color: #9CF09D;
+}
+
+form#node-detail > div {
+    color: #979797;
+    margin-bottom: 25px;
+    margin-top: 15px;
+}
+
+#node-actions {
+    background-color: #9CF09D;
+    height: 40px;
+    color: white;
+    font-size: 16px;
+}
+
+#node-actions .container,
+#node-actions .container .row{
+    height: 100%;
+}
+
+#node-actions-right {
+    text-align: right;
+}
+
+#file-drop {
+    height: 500px;
+    width: 100%;
+    background-color: #F3F4F2;
+}

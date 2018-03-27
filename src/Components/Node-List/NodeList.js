@@ -1,17 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { Row } from 'react-flexbox-grid';
 import Node from '../Node/Node';
+import uuid from 'uuid/v4'
 
 
 class NodeList extends Component {
     constructor(props){
         super(props);
+        // TODO Fetch list of nodes from electron
         this.state = {
             nodeList: [
-                {id: '001'},
-                {id: '002'},
-                {id: '003'},
-                {id: '004'}
+                {id: uuid()},
+                {id: uuid()},
+                {id: uuid()},
+                {id: uuid()}
             ]
         }
     }
