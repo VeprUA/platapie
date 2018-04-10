@@ -40,9 +40,20 @@ class FileDrop extends Component {
         event.preventDefault();
     }
 
+    handleDragExit = (event) => {
+        this.setState({
+            styleClass: ''
+        });
+
+        event.preventDefault();
+    }
     render() {
         return (
-            <div id="file-drop" className={this.state.styleClass} onDrop={this.handleFileDrop} onDragOver={this.handleFileDragOver}>
+            <div id="file-drop" 
+                className={this.state.styleClass} 
+                onDragOver={this.handleFileDragOver}
+                onDrop={this.handleFileDrop}
+                onDragLeave={this.handleDragExit} >
                 Place file here
             </div>
         )

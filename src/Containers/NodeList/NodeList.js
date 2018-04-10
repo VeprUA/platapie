@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Row } from 'react-flexbox-grid';
-import Node from '../Node/Node';
+import Node from '../../Components/NodeItem/NodeItem';
 import uuid from 'uuid/v4'
 
 

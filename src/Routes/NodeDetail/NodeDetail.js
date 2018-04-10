@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {Grid, Row, Col } from 'react-flexbox-grid';
-import FileDrop from '../FileDrop/FileDrop';
 import FontAwesome from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faPlay } from '@fortawesome/fontawesome-pro-light'
 
-import './Node-Detail.css';
+import FileDrop from '../../Components/FileDrop/FileDrop';
+
+import './NodeDetail.css';
 
 const DEFAULT_PROCESS_NAME = 'Untitled Process';
 
@@ -32,7 +33,7 @@ class NodeDetail extends Component {
 
         this.setState({ [eventName]: eventValue });
     }
-
+    
     handleFileResponse = (fileResponse) => {
         console.log(fileResponse);
         this.setState({

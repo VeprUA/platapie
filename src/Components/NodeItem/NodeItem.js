@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-flexbox-grid';
 import { Link } from 'react-router-dom';
-import ToggleSwitch from './ToggleSwitch/ToggleSwitch';
+import ToggleSwitch from '../ToggleSwitch/ToggleSwitch';
 
-import './Node.css';
+import './NodeItem.css';
 
-class Node extends Component {
+class NodeItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -38,4 +38,4 @@ class Node extends Component {
 
 }
 
-export default Node;
+export default NodeItem;
