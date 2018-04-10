@@ -2,11 +2,20 @@ import React, { Component } from 'react';
 
 import './FileDrop.css';
 
+const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
+
 class FileDrop extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isFileUploadComplete: false,
             styleClass: ''
+        }
+    }
+
+    componentWillMount = () => {
+        if(ipcRenderer){
+            ipcRenderer.on('file.upload', this.handleUploadedContent);
         }
     }
 
@@ -22,7 +31,14 @@ class FileDrop extends Component {
             });
     
             // Pass the information to electron to load the file
-    
+            if(ipcRenderer) {
+                const payload = {
+                    path: file.path
+                }
+                ipcRenderer.send('file.drop', payload);
+            }
+            // TODO: support online
+            
         }
        
         // Use DataTransfer interface to remove the drag data
@@ -36,7 +52,7 @@ class FileDrop extends Component {
         this.setState({
             styleClass : 'active'
         });
-        
+
         event.preventDefault();
     }
 
@@ -47,6 +63,16 @@ class FileDrop extends Component {
 
         event.preventDefault();
     }
+
+    handleUploadedContent = (event, payload) => {
+        if(payload.err) {
+            console.log(payload.err);
+            return;
+        }
+
+        console.log(payload.contents);
+    }
+
     render() {
         return (
             <div id="file-drop" 

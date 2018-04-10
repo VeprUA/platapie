@@ -10,6 +10,7 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require('path');
 const url = require('url');
+const fs = require('fs');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -58,12 +59,25 @@ app.on('activate', function () {
   }
 });
 
+ipcMain.on('file.drop', loadFileViaPath);
+
 ipcMain.on('test', (event, arg) => {
   console.log(arg);
   createChild((code) => {
     event.sender.send('test-reply', code);
   });  
 });
+
+function loadFileViaPath(event, payload){
+  fs.readFile(payload.path, {encoding: 'utf8'}, (err, contents) => {
+    if(err) {
+      // TODO: Create logging system
+      console.log(err);
+    }
+
+    event.sender.send('file.upload', {err, contents});
+  });
+}
 
 function createChild(cb){
   const sp = childProcess.spawn('touch', ['someawesome.txt']);
