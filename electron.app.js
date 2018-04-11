@@ -1,17 +1,19 @@
 const electron = require('electron');
-ipcMain = electron.ipcMain;
-
-const childProcess = require('child_process');
+const ipcMain = electron.ipcMain;
 
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
+const childProcess = require('child_process');
 const path = require('path');
 const url = require('url');
 const fs = require('fs');
 
+// Shell constants
+const ALLOW_FILE_EXTENTIONS = ['.json'];
+const DENY_FILE_NAMES = ['package-lock.json'];
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -62,20 +64,50 @@ app.on('activate', function () {
 ipcMain.on('file.drop', loadFileViaPath);
 
 ipcMain.on('test', (event, arg) => {
-  console.log(arg);
   createChild((code) => {
     event.sender.send('test-reply', code);
   });  
 });
 
 function loadFileViaPath(event, payload){
+  const payloadToReturn = {};
+
+  // Check if file extention to be loaded is allowed
+  if(!ALLOW_FILE_EXTENTIONS.includes(path.extname(payload.path))){
+    payloadToReturn['err'] = 'Invalid file format';
+    event.sender.send('file.upload', payloadToReturn);
+    return;
+  }
+
+  // Check if file name is allowed
+  if(DENY_FILE_NAMES.includes(path.basename(payload.path))){
+    payloadToReturn['err'] = 'Invalid file name';
+    event.sender.send('file.upload', payloadToReturn);
+    return;
+  }
+
+  // Set file info
+  payloadToReturn['file_path'] = payload.path;
+  payloadToReturn['file_name'] = path.basename(payload.path);
+  payloadToReturn['file_extention'] = path.extname(payload.path);
+
   fs.readFile(payload.path, {encoding: 'utf8'}, (err, contents) => {
     if(err) {
       // TODO: Create logging system
+      payloadToReturn['err'] = err;
       console.log(err);
     }
 
-    event.sender.send('file.upload', {err, contents});
+    // Is it JSON parsable?
+    try{
+      JSON.parse(contents);
+      payloadToReturn['contents'] = contents;
+    }catch(e){
+      payloadToReturn['err'] = 'Cannot parse JSON successfully';
+    }finally{
+      event.sender.send('file.upload', payloadToReturn);
+    }
+
   });
 }
 

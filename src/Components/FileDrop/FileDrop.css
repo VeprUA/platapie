@@ -10,7 +10,17 @@
     border-radius: 15px;
 }
 
-#file-drop.active {
-    border: 4px dashed #9CF09D;
+#file-drop.file-drag {
+    border: 4px dashed #E0F5E0;
     background-color: inherit;
+}
+
+#file-drop.file-upload-success {
+    background-color: #E0F5E0 ;
+    color: inherit;
+}
+
+#file-drop.file-upload-failed {
+    background-color: #EE6352;
+    color: white;
 }

@@ -5,7 +5,6 @@ import './ElectronSupportBanner.css';
 class ElectronSupportBanner extends Component {
     constructor(props) {
         super(props);
-        console.log(window);
         this.state = {
             isRunningOnElectron: !!window.electron
         }

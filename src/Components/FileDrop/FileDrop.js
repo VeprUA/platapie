@@ -3,13 +3,15 @@ import React, { Component } from 'react';
 import './FileDrop.css';
 
 const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
+const DEFAULT_FILE_DROP_TEXT = 'Drop package.json file here';
 
 class FileDrop extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isFileUploadComplete: false,
-            styleClass: ''
+            fileDropAreaText: DEFAULT_FILE_DROP_TEXT,
+            styleClass: '',
+            filePath: ''
         }
     }
 
@@ -25,10 +27,6 @@ class FileDrop extends Component {
         if(event.dataTransfer.files.length >= 0){
             // Only allow one file to load
             const file = event.dataTransfer.files[0];
-        
-            this.props.fileStateResponse({
-                filePath: file.path
-            });
     
             // Pass the information to electron to load the file
             if(ipcRenderer) {
@@ -36,6 +34,8 @@ class FileDrop extends Component {
                     path: file.path
                 }
                 ipcRenderer.send('file.drop', payload);
+
+                this.setState({filePath: file.path});
             }
             // TODO: support online
             
@@ -50,7 +50,8 @@ class FileDrop extends Component {
 
     handleFileDragOver = (event) => {
         this.setState({
-            styleClass : 'active'
+            fileDropAreaText: DEFAULT_FILE_DROP_TEXT,
+            styleClass : 'file-drag'
         });
 
         event.preventDefault();
@@ -67,10 +68,21 @@ class FileDrop extends Component {
     handleUploadedContent = (event, payload) => {
         if(payload.err) {
             console.log(payload.err);
+            this.setState({
+                fileDropAreaText: payload.err,
+                styleClass: 'file-upload-failed'
+            });
             return;
         }
 
-        console.log(payload.contents);
+        // Transfer file contents out of the component
+        this.props.fileUploadComplete(payload);
+        
+        // Display currently loaded file
+        this.setState({
+            fileDropAreaText : payload.file_name,
+            styleClass: 'file-upload-success'
+        });
     }
 
     render() {
@@ -80,7 +92,7 @@ class FileDrop extends Component {
                 onDragOver={this.handleFileDragOver}
                 onDrop={this.handleFileDrop}
                 onDragLeave={this.handleDragExit} >
-                Place file here
+                { this.state.fileDropAreaText }
             </div>
         )
     }

@@ -5,6 +5,7 @@ import FontAwesome from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faPlay } from '@fortawesome/fontawesome-pro-light'
 
 import FileDrop from '../../Components/FileDrop/FileDrop';
+import ScriptList from '../../Containers/ScriptList/ScriptList';
 
 import './NodeDetail.css';
 
@@ -16,7 +17,8 @@ class NodeDetail extends Component {
         this.state = {
             nodeId: props.match.params.nodeId,
             processName: DEFAULT_PROCESS_NAME,
-            fileLocationPath: ''
+            fileLocationPath: '',
+            scripts: {}
         }
     }
 
@@ -34,11 +36,19 @@ class NodeDetail extends Component {
         this.setState({ [eventName]: eventValue });
     }
     
-    handleFileResponse = (fileResponse) => {
-        console.log(fileResponse);
+    handleFileUploadComplete = (fileResponse) => {
+        const fileAsJSON = JSON.parse(fileResponse.contents);
+
         this.setState({
-            fileLocationPath : fileResponse.filePath
+            fileLocationPath : fileResponse.file_path,
+            processName: fileAsJSON.name,
+            scripts: fileAsJSON.scripts
         });
+    }
+
+    handleScriptSelection = (script) => {
+        // Pass the script to electron to start new process
+        console.log(script);
     }
 
     render() {
@@ -68,15 +78,17 @@ class NodeDetail extends Component {
                     <form id="node-detail">
                         <Row middle="xs">
                             <Col xs={12}>
-                                <FileDrop fileStateResponse={this.handleFileResponse} />
+                                <FileDrop fileUploadComplete={this.handleFileUploadComplete} 
+                                />
                             </Col>
                         </Row>
                         <Row middle="xs">
-                            <Col xs={6}>
+                            <Col xs={9}>
                                 <label htmlFor="processName">Process name</label>
                                 <input type="text" name="processName" value={ this.state.processName } onChange={ this.handleTextChange }/>
                             </Col>
-                            <Col xs={6}>
+                            <Col xs={3}>
+                                <ScriptList scripts={this.state.scripts} onScriptSelect={this.handleScriptSelection}/>
                             </Col>
                         </Row>
                         <Row middle="xs">

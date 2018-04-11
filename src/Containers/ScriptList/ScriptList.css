@@ -1,0 +1,20 @@
+#ScriptList > ul {
+    padding: 10px;
+}
+
+#ScriptList > ul > li {
+    padding: 4px 6px 4px 6px;
+    cursor: pointer;
+    display: block;
+    background-color: transparent;
+}
+
+#ScriptList > ul > li.populated {
+    color: #59CD90;
+    background-color: transparent;
+    transition: background-color 0.2s linear;
+}
+
+#ScriptList > ul > li.populated:hover {
+    background-color: #E0F5E0;
+}
