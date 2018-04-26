@@ -34,4 +34,5 @@
     font-size: 14px;
     color: #5B5B5B;
     font-weight: 300;
+    text-overflow: ellipsis;
 }

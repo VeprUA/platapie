@@ -1,0 +1,1 @@
+export const LOCALSTORAGE_NODE_LIST = 'node_list';

@@ -22,36 +22,6 @@
     color: inherit;
 }
 
-form#node-detail {
-    margin: 50px 0 50px 0;
-}
-
-form#node-detail label {
-    font-size: 16px;
-    display:block;
-}
-
-form#node-detail input {
-    font-size:  21px;
-    padding: 10px 0 2px 0;
-    border: 0;
-    border-bottom: 1px solid #F3F4F2;
-    width: 100%;
-    transition: border-color 0.2s linear;
-    font-weight: 100;
-}
-
-form#node-detail input:focus {
-    outline: 0;
-    border-bottom-color: #9CF09D;
-}
-
-form#node-detail > div {
-    color: #979797;
-    margin-bottom: 25px;
-    margin-top: 15px;
-}
-
 #node-actions {
     background-color: #9CF09D;
     height: 40px;
@@ -68,8 +38,24 @@ form#node-detail > div {
     text-align: right;
 }
 
-#file-drop {
-    height: 500px;
-    width: 100%;
-    background-color: #F3F4F2;
+/* Bottom half of the detailed view */
+#NodeDetailContent {
+    padding: 10px 8% 20px 8%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
 }
+
+#NodeDetailContent > #Navigation {
+    width: 300px;
+    height: 100%;
+}
+
+#NodeDetailContent > #NestedRouterComponent {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+

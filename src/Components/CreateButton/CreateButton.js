@@ -3,7 +3,7 @@ import './CreateButton.css';
 
 function CreateButton(props) {
     return (
-        <button className="CreateButton">New</button>
+        <button className="CreateButton" onClick={() => {props.onClickEvent()}}>New</button>
     )
 }
 

@@ -1,0 +1,8 @@
+.NodeListBanner {
+    height: 200px;
+}
+
+.NodeListBanner .container,
+.NodeListBanner .container .row{
+    height: 100%;
+}

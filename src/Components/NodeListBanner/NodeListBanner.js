@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 
-import './Navigation.css';
+import './NodeListBanner.css';
 
-import CreateButton from './CreateButton/CreateButton';
+import CreateButton from './../CreateButton/CreateButton';
 
-class Navigation extends Component {
-
+class NodeListBanner extends Component {
+    
     render() {
         return (
-            <div className="Navigation">
+            <div className="NodeListBanner">
                 <Grid>
                     <Row end="xs" middle="xs" >
                         <Col xs={12}>
-                            <CreateButton />
+                            <CreateButton onClickEvent={this.props.addNewNode}/>
                         </Col>
                     </Row>
                 </Grid>
@@ -22,4 +22,4 @@ class Navigation extends Component {
     }
 }
 
-export default Navigation
+export default NodeListBanner

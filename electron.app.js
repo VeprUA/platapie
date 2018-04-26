@@ -100,8 +100,7 @@ function loadFileViaPath(event, payload){
 
     // Is it JSON parsable?
     try{
-      JSON.parse(contents);
-      payloadToReturn['contents'] = contents;
+      payloadToReturn['contents'] = JSON.parse(contents);
     }catch(e){
       payloadToReturn['err'] = 'Cannot parse JSON successfully';
     }finally{

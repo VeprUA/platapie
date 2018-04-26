@@ -1,48 +1,47 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {Grid, Row, Col } from 'react-flexbox-grid';
+import { Route, Switch } from 'react-router-dom';
 import FontAwesome from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faPlay } from '@fortawesome/fontawesome-pro-light'
+import { faAngleLeft, faPlay } from '@fortawesome/fontawesome-pro-light';
+import uuid from 'uuid/v4'
+import NodeService from '../../Services/NodeService.service';
 
-import FileDrop from '../../Components/FileDrop/FileDrop';
-import ScriptList from '../../Containers/ScriptList/ScriptList';
+// Routes
+import Settings from './SettingsRoute/Settings';
+import Scripts from './ScriptsRoute/Scripts';
+import Dependencies from './DependenciesRoute/Dependencies';
+
+import NodeDetailNavigation from '../../Components/NodeDetailNavigation/NodeDetailNavigation';
 
 import './NodeDetail.css';
 
-const DEFAULT_PROCESS_NAME = 'Untitled Process';
+// Services
+const nodeService = new NodeService();
 
 class NodeDetail extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
-            nodeId: props.match.params.nodeId,
-            processName: DEFAULT_PROCESS_NAME,
-            fileLocationPath: '',
-            scripts: {}
+            node: nodeService.getNode(props.match.params.nodeId)
         }
     }
 
-    componentDidMount() {
-        // TODO: Pull the details from electron
-        if(this.state.processName === DEFAULT_PROCESS_NAME){
-            this.setState({processName : 'Web-Client'});
-        }
-    }
+    handleFileUploadComplete = (file) => {
+        console.log(file);
+        let node = {...this.state.node};
 
-    handleTextChange = (event) => {
-        const eventName = event.target.name;
-        const eventValue = event.target.value;
-
-        this.setState({ [eventName]: eventValue });
-    }
-    
-    handleFileUploadComplete = (fileResponse) => {
-        const fileAsJSON = JSON.parse(fileResponse.contents);
+        // Update node instance
+        node.processName = file.contents.name;
+        node.scripts = file.contents.scripts;
+        node.dependencies = file.contents.dependencies;
+        node.fileLocation = file.file_path;
+        
+        nodeService.saveNode(node);
 
         this.setState({
-            fileLocationPath : fileResponse.file_path,
-            processName: fileAsJSON.name,
-            scripts: fileAsJSON.scripts
+            node: node
         });
     }
 
@@ -63,7 +62,7 @@ class NodeDetail extends Component {
                                 </Link>
                             </Col>
                             <Col id="node-actions-right" xs={6} >
-                            <FontAwesome icon={faPlay} fixedWidth /> Run
+                                <FontAwesome icon={faPlay} fixedWidth /> Run
                             </Col>
                         </Row>
                     </Grid>
@@ -71,36 +70,27 @@ class NodeDetail extends Component {
                 <svg id="svg1Container" viewBox="0 0 100 20" preserveAspectRatio="none">
                     <rect x="0" y="0" width="100" height="20" fill="#E0F5E0"/>
                     <text id="svg1ProccessSubHeader" x="10" y="8.7" fill="#777777">Process</text>
-                    <text id="svg1ProccessTitle" x="10" y="12" fill="#5B5B5B">{ this.state.processName }</text>
-                    <text id="svg1NodeId" x="90" y="8.7" textAnchor="end" fill="#5B5B5B">{ this.state.nodeId }</text>
+                    <text id="svg1ProccessTitle" x="10" y="12" fill="#5B5B5B">{ this.state.node.processName }</text>
+                    <text id="svg1NodeId" x="90" y="8.7" textAnchor="end" fill="#5B5B5B">{ this.state.node.id }</text>
                 </svg>
-                <Grid>
-                    <form id="node-detail">
-                        <Row middle="xs">
-                            <Col xs={12}>
-                                <FileDrop fileUploadComplete={this.handleFileUploadComplete} 
-                                />
-                            </Col>
-                        </Row>
-                        <Row middle="xs">
-                            <Col xs={9}>
-                                <label htmlFor="processName">Process name</label>
-                                <input type="text" name="processName" value={ this.state.processName } onChange={ this.handleTextChange }/>
-                            </Col>
-                            <Col xs={3}>
-                                <ScriptList scripts={this.state.scripts} onScriptSelect={this.handleScriptSelection}/>
-                            </Col>
-                        </Row>
-                        <Row middle="xs">
-                            <Col xs={6}>
-                                <label htmlFor="fileLocationPath">Script location path</label>
-                                <input type="text" name="fileLocationPath" value={ this.state.fileLocationPath } onChange={ this.handleTextChange }/>
-                            </Col>
-                            <Col xs={6}>
-                            </Col>
-                        </Row>
-                    </form>
-                </Grid>
+                <div id="NodeDetailContent">
+                    <div id="Navigation" >
+                        <NodeDetailNavigation nodeId={this.state.node.id}/>
+                    </div>
+                    <div id="NestedRouterComponent">
+                        <Switch>
+                            <Route 
+                                path='/nodes/:nodeId/scripts' 
+                                render={(props) => <Scripts scripts={this.state.node.scripts} />} />
+                            <Route 
+                                path='/nodes/:nodeId/settings' 
+                                render={(props) => <Settings onFileUploadComplete={this.handleFileUploadComplete} />}/>
+                            <Route 
+                                path='/nodes/:nodeId/dependencies'
+                                render={(props) => <Dependencies dependencies={this.state.node.dependencies} />}/>
+                        </Switch>
+                    </div>
+                </div>
           </Fragment>
         )
     }
