@@ -5,14 +5,20 @@ class Scripts extends Component {
         super(props);
         console.log(props);
         this.state = { 
-            scripts: props.scripts
+            scripts: null
+        }
+    }
+
+    componentDidMount = () => {
+        if(!this.state.scripts){
+            this.setState({scripts: this.props.scripts});
         }
     }
 
     render() {
         let scripts = <li>No scripts found</li>;
 
-        if(Object.keys(this.state.scripts).length > 0){
+        if(this.state.scripts && Object.keys(this.state.scripts).length > 0){
             scripts = Object.keys(this.state.scripts).map((key, index) => {
                 return (
                     <li key={index}>{key}</li>

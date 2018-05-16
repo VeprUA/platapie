@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import {Grid, Row, Col } from 'react-flexbox-grid';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import FontAwesome from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faPlay } from '@fortawesome/fontawesome-pro-light';
 import uuid from 'uuid/v4'
@@ -12,24 +12,20 @@ import Settings from './SettingsRoute/Settings';
 import Scripts from './ScriptsRoute/Scripts';
 import Dependencies from './DependenciesRoute/Dependencies';
 
+import LoadingFrame from '../../Components/LoadingFrame/LoadingFrame';
 import NodeDetailNavigation from '../../Components/NodeDetailNavigation/NodeDetailNavigation';
 
 import './NodeDetail.css';
 
-// Services
-const nodeService = new NodeService();
-
 class NodeDetail extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {
-            node: nodeService.getNode(props.match.params.nodeId)
+            node: NodeService.getNode(this.props.match.params.nodeId)
         }
     }
 
     handleFileUploadComplete = (file) => {
-        console.log(file);
         let node = {...this.state.node};
 
         // Update node instance
@@ -38,7 +34,7 @@ class NodeDetail extends Component {
         node.dependencies = file.contents.dependencies;
         node.fileLocation = file.file_path;
         
-        nodeService.saveNode(node);
+        NodeService.saveNode(node);
 
         this.setState({
             node: node
@@ -50,7 +46,27 @@ class NodeDetail extends Component {
         console.log(script);
     }
 
-    render() {
+    handleTextChange = (event) => {
+        const fieldName = event.target.name;
+        const fieldValue  = event.target.value;
+        const node = {...this.state.node};
+
+        if(fieldName in this.state.node){
+            node[fieldName] = fieldValue;
+
+            NodeService.saveNode(node);
+            this.setState({
+                node: {...node}
+            });
+        }
+    }
+
+    handleNodeRemoval = (node) => {
+        NodeService.removeNode(node);
+        this.props.history.push('/nodes');
+    }
+
+    renderPage = () => {
         return (
             <Fragment>
                 <div id="node-actions">
@@ -84,15 +100,25 @@ class NodeDetail extends Component {
                                 render={(props) => <Scripts scripts={this.state.node.scripts} />} />
                             <Route 
                                 path='/nodes/:nodeId/settings' 
-                                render={(props) => <Settings onFileUploadComplete={this.handleFileUploadComplete} />}/>
+                                render={(props) => <Settings node={this.state.node}
+                                                             onNodeRemove={this.handleNodeRemoval}
+                                                             onFileUploadComplete={this.handleFileUploadComplete}
+                                                             handleTextChange={this.handleTextChange} />}/>
                             <Route 
                                 path='/nodes/:nodeId/dependencies'
                                 render={(props) => <Dependencies dependencies={this.state.node.dependencies} />}/>
+                            <Redirect from="/nodes/:nodeId/" to="/nodes/:nodeId/scripts"/>
                         </Switch>
                     </div>
                 </div>
           </Fragment>
         )
+    }
+
+    render() {
+
+        return this.renderPage();
+        
     }
 }
 

@@ -1,0 +1,17 @@
+.dependency-link{
+    display: inline-block;
+    padding: 8px;
+    background-color: rgba(0,0,0,0.04);
+    margin: 8px;
+    border-radius: 2px;
+    transition: background-color 0.3s linear;
+}
+
+.dependency-link:hover{
+    background-color: #E0F5E0;
+}
+
+.dependency-link > a {
+    color: #59CD90;
+    text-decoration: none;
+}

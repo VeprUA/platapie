@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import Electron from '../../Services/Electron.service';
 
 import './FileDrop.css';
 
-const ipcRenderer = window.electron ? window.electron.ipcRenderer : null;
 const DEFAULT_FILE_DROP_TEXT = 'Drop package.json file here';
 
 class FileDrop extends Component {
@@ -13,12 +13,12 @@ class FileDrop extends Component {
             styleClass: '',
             filePath: ''
         }
+
+        Electron.ipcRenderer.on('file.upload', this.handleUploadedContent);
     }
 
     componentWillMount = () => {
-        if(ipcRenderer){
-            ipcRenderer.on('file.upload', this.handleUploadedContent);
-        }
+        
     }
 
     handleFileDrop = (event) => {
@@ -29,14 +29,13 @@ class FileDrop extends Component {
             const file = event.dataTransfer.files[0];
     
             // Pass the information to electron to load the file
-            if(ipcRenderer) {
-                const payload = {
-                    path: file.path
-                }
-                ipcRenderer.send('file.drop', payload);
-
-                this.setState({filePath: file.path});
+            const payload = {
+                path: file.path
             }
+            Electron.ipcRenderer.send('file.drop', payload);
+
+            this.setState({filePath: file.path});
+
             // TODO: support online
             
         }
@@ -66,8 +65,8 @@ class FileDrop extends Component {
     }
 
     handleUploadedContent = (event, payload) => {
+        console.log(event);
         if(payload.err) {
-            console.log(payload.err);
             this.setState({
                 fileDropAreaText: payload.err,
                 styleClass: 'file-upload-failed'
@@ -77,12 +76,6 @@ class FileDrop extends Component {
 
         // Transfer file contents out of the component
         this.props.fileUploadComplete(payload);
-        
-        // Display currently loaded file
-        this.setState({
-            fileDropAreaText : payload.file_name,
-            styleClass: 'file-upload-success'
-        });
     }
 
     render() {

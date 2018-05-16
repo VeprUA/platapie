@@ -6,25 +6,23 @@ import NodeList from '../../Containers/NodeList/NodeList';
 import Node from '../../Models/Node.model';
 import NodeService from '../../Services/NodeService.service';
 
-const nodeService = new NodeService();
-
 class Home extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            nodeList: nodeService.getNodeList()
+            nodeList: NodeService.getNodeList()
         }
     }
 
     loadNodeList = () => {
        this.setState({
-           nodeList: [...nodeService.getNodeList()]
+           nodeList: [...NodeService.getNodeList()]
        });
     }
 
     createNewNode = () => {
-        nodeService.addNode(new Node());
+        NodeService.addNode(new Node());
         this.loadNodeList();
     }
 

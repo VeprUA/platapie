@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import DependencyLink from '../../../Components/DependencyLink/DependencyLink';
 
 class Dependencies extends Component {
     constructor(props){
@@ -13,14 +14,19 @@ class Dependencies extends Component {
         
         if(Object.keys(this.state.dependencies).length > 0){
             dependecies = Object.keys(this.state.dependencies).map((key, index) => {
-                return (<li key={index}>{key}@{this.state.dependencies[key].substring(1)}</li>);
+                let url = `http://www.npmjs.com/package/${key}`;
+                return (<DependencyLink key={index}>
+                            <a href={url} target="_blank" >
+                                {key}@{this.state.dependencies[key].substring(1)}
+                            </a>
+                        </DependencyLink>);
             });
         }
 
         return (
-            <ul>
+            <div>
                 {dependecies}
-            </ul>
+            </div>
         )
     }
 }

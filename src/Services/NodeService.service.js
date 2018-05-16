@@ -8,16 +8,16 @@ class NodeService {
         }
     }
 
-    getNode = (nodeId) => {
-        return this.getNodeList().find(node => node.id === nodeId);
+    static getNode = (nodeId) => {
+        return NodeService.getNodeList().find(node => node.id === nodeId);
     }
 
-    saveNode = (node) => {
-        let nodeList = this.getNodeList();
+    static saveNode = (node) => {
+        let nodeList = NodeService.getNodeList();
         let nodeIndex = nodeList.findIndex(nodeElement => nodeElement.id === node.id);
 
         if(nodeIndex === -1){
-            this.addNode(node);
+            NodeService.addNode(node);
             return;
         }
 
@@ -25,28 +25,32 @@ class NodeService {
         nodeList[nodeIndex] = node;
 
         // Save the new list
-        this.saveNodeList(nodeList);
+        NodeService.saveNodeList(nodeList);
     }
 
-    getNodeList = () => {
+    static getNodeList = () => {
         return JSON.parse(localStorage.getItem(LOCALSTORAGE_NODE_LIST));
     }
 
-    saveNodeList = (nodeList) => {
+    static saveNodeList = (nodeList) => {
         localStorage.setItem(LOCALSTORAGE_NODE_LIST, JSON.stringify(nodeList));
     }
 
-    addNode = (node) => {
-        let nodeList = this.getNodeList();
+    static addNode = (node) => {
+        let nodeList = NodeService.getNodeList();
         nodeList = [...nodeList, node];
-        this.saveNodeList(nodeList);
+        NodeService.saveNodeList(nodeList);
     }
 
-    removeNode = (node) => {
-        let nodeList = this.getNodeList();
-        const newNodeList = nodeList.filter(nodeElement => nodeElement.id === node.id);
-        this.saveNodeList(newNodeList);
+    static removeNode = (node) => {
+        console.log(node);
+        let nodeList = NodeService.getNodeList();
+        const newNodeList = nodeList.filter(nodeElement => nodeElement.id !== node.id);
+        console.log(newNodeList);
+        NodeService.saveNodeList(newNodeList);
     }
 }
+
+new NodeService();
 
 export default NodeService;

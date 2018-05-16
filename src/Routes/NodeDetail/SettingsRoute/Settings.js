@@ -1,50 +1,47 @@
 import React, { Component } from 'react';
 
 import FileDrop from '../../../Components/FileDrop/FileDrop';
+import TextInput from '../../../Components/TextInput/TextInput';
 
 import './Settings.css';
 
 class Settings extends Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            fileLocationPath: '',
-            fileContents: {}
-        };
-    }
-
-    handleTextChange = (event) => {
-        const eventName = event.target.name;
-        const eventValue = event.target.value;
-
-        this.setState({ [eventName]: eventValue });
-    }
-
-    handleFileUploadComplete = (fileResponse) => {
-
-        this.setState({
-            fileLocationPath : fileResponse.file_path,
-            fileContents: {...fileResponse.contents}
-        });
-
-        this.props.onFileUploadComplete(fileResponse);
+    
+    handleRemove = () => {
+        this.props.onNodeRemove(this.props.node);
     }
 
     render = () => {
-        let renderFileContents = null;
-
-        if(this.state.fileContents.name) {
-            renderFileContents = (
-                <pre>
-                    {JSON.stringify(this.state.fileContents, null, 2)}
-                </pre>
-            )
-        }
         return (
             <div id="Settings">
-                <FileDrop fileUploadComplete={this.handleFileUploadComplete} />
-                { renderFileContents }
+                <FileDrop fileUploadComplete={this.props.onFileUploadComplete} />
+
+                {/* Process Name */}
+                <TextInput  
+                    inputId="node-name"
+                    name="processName"
+                    value={this.props.node.processName}
+                    onChange={(e) => this.props.handleTextChange(e)}
+                    labelText="Process Name"/>
+
+                {/* Version */}
+                <TextInput  
+                    inputId="node-version"
+                    name="version"
+                    value={this.props.node.version}
+                    onChange={(e) => this.props.handleTextChange(e)}
+                    labelText="Version"/>
+
+                {/* File Location */}
+                <TextInput  
+                    inputId="node-location"
+                    name="fileLocation"
+                    value={this.props.node.fileLocation}
+                    onChange={(e) => this.props.handleTextChange(e)}
+                    labelText="File Location"/>
+
+                {/* Remove */}
+                <div onClick={() => this.handleRemove()}>Remove</div>
             </div>
         )
     }
